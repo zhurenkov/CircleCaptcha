@@ -1,0 +1,49 @@
+\hypertarget{circle_8pl_source}{}\section{circle.\+pl}
+
+\begin{DoxyCode}
+00001 #!/usr/bin/perl
+00002 use strict;
+00003 use warnings;
+00004 use POSIX;
+00005 use SVG;
+00006 
+00007 open CAP, ">cap.svg" or die "Невозможно создать SVG-файл: $!\(\backslash\)n";
+00008  
+00009 our $m=100;
+00010 # create an SVG object with a size of 200x200 pixels
+00011 # Создаём SVG объект размером 200 на 200 пикселей.
+00012 my $svg = SVG->new(
+00013 width => $m*2,
+00014 height => $m*2,
+00015 );
+00016 
+00017 our $n=shift()+1;
+00018 my $r;
+00019 my %rgb;
+00020 
+00021 # add a circles
+00022 # Создаём случайные круги.
+00023 for(my $i=0;$i<$n;$i++)\{
+00024 $r=10+floor(rand()*($m-10));
+00025 %rgb=(R=>floor(rand()*255), G=>floor(rand()*255), B=>floor(rand()*255));
+00026 
+00027 $svg->circle(
+00028 r => $r,
+00029 cx => $r+floor(rand()*2*($m-$r)),
+00030 cy => $r+floor(rand()*2*($m-$r)),
+00031 style => \{
+00032  'fill' => 'rgb('.$rgb\{R\}.','.$rgb\{G\}.','.$rgb\{B\}.')',
+00033  'stroke' => 'black',
+00034  'stroke-width' => 1,
+00035  'stroke-opacity' => .5,
+00036  'fill-opacity' => .5,
+00037 \},
+00038 );
+00039 print $r." ";
+00040 print $rgb\{R\}."+".$rgb\{G\}."+".$rgb\{B\}."; ";
+00041 \}
+00042 
+00043 # now render the SVG object, implicitly use svg namespace
+00044 # Рендерим SVG объект и превращаем его в svg-файл.
+00045 print CAP $svg->xmlify;
+\end{DoxyCode}

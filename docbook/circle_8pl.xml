@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="circle_8pl">
+    <title>circle.pl File Reference</title>
+    <simplesect>
+        <title>Подробное описание</title>
+    <para>Definition in file /home/zhur/Документы/depart.pie/IPrg/pract/CircleCaptcha/circle.pl</para>
+    </simplesect>
+    <literallayout><computeroutput>
+#!/usr/bin/perl
+use&#32;strict;
+use&#32;warnings;
+use&#32;POSIX;
+use&#32;SVG;
+
+open&#32;CAP,&#32;&quot;&gt;cap.svg&quot;&#32;or&#32;die&#32;&quot;Невозможно&#32;создать&#32;SVG-файл:&#32;$!\n&quot;;
+&#32;
+our&#32;$m=100;
+#&#32;create&#32;an&#32;SVG&#32;object&#32;with&#32;a&#32;size&#32;of&#32;200x200&#32;pixels
+#&#32;Создаём&#32;SVG&#32;объект&#32;размером&#32;200&#32;на&#32;200&#32;пикселей.
+my&#32;$svg&#32;=&#32;SVG-&gt;new(
+width&#32;=&gt;&#32;$m*2,
+height&#32;=&gt;&#32;$m*2,
+);
+
+our&#32;$n=shift()+1;
+my&#32;$r;
+my&#32;%rgb;
+
+#&#32;add&#32;a&#32;circles
+#&#32;Создаём&#32;случайные&#32;круги.
+for(my&#32;$i=0;$i&lt;$n;$i++){
+$r=10+floor(rand()*($m-10));
+%rgb=(R=&gt;floor(rand()*255),&#32;G=&gt;floor(rand()*255),&#32;B=&gt;floor(rand()*255));
+
+$svg-&gt;circle(
+r&#32;=&gt;&#32;$r,
+cx&#32;=&gt;&#32;$r+floor(rand()*2*($m-$r)),
+cy&#32;=&gt;&#32;$r+floor(rand()*2*($m-$r)),
+style&#32;=&gt;&#32;{
+&#32;&apos;fill&apos;&#32;=&gt;&#32;&apos;rgb(&apos;.$rgb{R}.&apos;,&apos;.$rgb{G}.&apos;,&apos;.$rgb{B}.&apos;)&apos;,
+&#32;&apos;stroke&apos;&#32;=&gt;&#32;&apos;black&apos;,
+&#32;&apos;stroke-width&apos;&#32;=&gt;&#32;1,
+&#32;&apos;stroke-opacity&apos;&#32;=&gt;&#32;.5,
+&#32;&apos;fill-opacity&apos;&#32;=&gt;&#32;.5,
+},
+);
+print&#32;$r.&quot;&#32;&quot;;
+print&#32;$rgb{R}.&quot;+&quot;.$rgb{G}.&quot;+&quot;.$rgb{B}.&quot;;&#32;&quot;;
+}
+
+#&#32;now&#32;render&#32;the&#32;SVG&#32;object,&#32;implicitly&#32;use&#32;svg&#32;namespace
+#&#32;Рендерим&#32;SVG&#32;объект&#32;и&#32;превращаем&#32;его&#32;в&#32;svg-файл.
+print&#32;CAP&#32;$svg-&gt;xmlify;
+    </computeroutput></literallayout>
+</section>
